@@ -1,7 +1,7 @@
 import { StudentDropdown } from '../../../shared/ui/index'
 
 interface IStudentSelectButton {
-  elements: Array<{ name: string; id: string; }>;
+  elements: Array<{ name: string; id: string; groupName: string; }>;
   onSelect: (id: string) => void;
   title: string;
 };

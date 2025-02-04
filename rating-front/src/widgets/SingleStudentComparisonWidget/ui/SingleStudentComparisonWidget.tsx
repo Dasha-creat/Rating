@@ -10,6 +10,7 @@ import './SinglestudentComparisonWidget.css';
 interface IStudent {
   id: string;
   name: string;
+  groupName: string;
 }
 
 interface ISubject {

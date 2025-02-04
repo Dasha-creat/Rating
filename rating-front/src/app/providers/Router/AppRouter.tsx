@@ -8,7 +8,7 @@ export const AppRouter = () => (
   <Routes>
     <Route path="/main" element={<MainPage />} />
     <Route path="/extra/:id" element={<StudentPage />} />
-    <Route path="/extra-no-table/:name/:id" element={<GroupPage />} />
+    <Route path="/extra-no-table/:name" element={<GroupPage />} />
     <Route path="/compare" element={<ComparePage />} />
   </Routes>
 );

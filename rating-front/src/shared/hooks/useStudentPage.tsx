@@ -48,7 +48,7 @@ export const useStudentPage = () => {
   }, [id]);
 
   const handleGradeChange = async (subjectId: string, date: string, newGrade: string | number | "") => {
-    const gradeToSend = newGrade === '' ? 0 : Number(newGrade);
+    const gradeToSend = newGrade === ''  ? 0 : Number(newGrade);
     await updateGrade(id!, subjectId, date, gradeToSend);
     setGradesData(prev => ({
       ...prev,

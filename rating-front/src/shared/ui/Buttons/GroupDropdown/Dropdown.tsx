@@ -3,16 +3,18 @@ import { arrow } from '../../../assets/index';
 import "./Dropdown.css";
 
 interface IGroupDropdown {
-  elements: Array<{ name: string; id: number }>;
+  elements: Array<{ name: string; id: string }>;
   title: string;
-  onSelect: (name: string, id: number) => void;
+  onSelect: (name: string, id: string) => void;
 }
 
 export const GroupDropdown: React.FC<IGroupDropdown> = ({ elements, title, onSelect }) => {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
+    const [selectedId, setSelectedId] = useState<string | null>(null);
 
-  const handleItemClick = (name: string, id: number) => {
+  const handleItemClick = (name: string, id: string) => {
+    setSelectedId(id);
     onSelect(name, id);
     setIsOpen(false);
   };
@@ -33,7 +35,7 @@ export const GroupDropdown: React.FC<IGroupDropdown> = ({ elements, title, onSel
   return (
     <div className="four button main-dropdown" ref={dropdownRef}>
       <button onClick={() => setIsOpen(!isOpen)} className="custom-button group-button">
-        {title}
+        {selectedId || title}
         <img src={arrow} alt="arrow" width={"25rem"} />
       </button>
       {isOpen && (

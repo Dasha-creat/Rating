@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 
-export const useStudentsDropdown = (onStudentsChange: (selectedStudents: { id: string; name: string }[]) => void) => {
-  const [selectedStudents, setSelectedStudents] = useState<{ id: string; name: string }[]>([]);
+export const useStudentsDropdown = (onStudentsChange: (selectedStudents: { id: string; name: string, groupName: string }[]) => void) => {
+  const [selectedStudents, setSelectedStudents] = useState<{ id: string; name: string, groupName: string }[]>([]);
   const [isOpen, setIsOpen] = useState(false);
   const [error, setError] = useState<string>('');
   const [searchTerm, setSearchTerm] = useState<string>('');
@@ -11,14 +11,14 @@ export const useStudentsDropdown = (onStudentsChange: (selectedStudents: { id: s
     setSearchTerm(event.target.value);
   };
 
-  const handleSelect = (id: string, name: string) => {
+  const handleSelect = (id: string, name: string, groupName: string) => {
     setError('');
     if (selectedStudents.some(student => student.id === id)) {
       const updatedStudents = selectedStudents.filter(student => student.id !== id);
       setSelectedStudents(updatedStudents);
       onStudentsChange(updatedStudents);
     } else if (selectedStudents.length < 2) {
-      const updatedStudents = [...selectedStudents, { id, name }];
+      const updatedStudents = [...selectedStudents, { id, name, groupName }];
       setSelectedStudents(updatedStudents);
       onStudentsChange(updatedStudents);
     } else {

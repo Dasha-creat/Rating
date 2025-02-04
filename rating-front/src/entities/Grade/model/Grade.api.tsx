@@ -21,7 +21,7 @@ interface IGrade {
 }
 
 export const fetchGradesByDateRange = async (
-  studentId: string,
+  studentId: string | undefined,
   subjectIds: string[],
   startDate: string,
   endDate: string
@@ -57,6 +57,7 @@ export const updateGrade = async (
 ): Promise<void> => {
   try {
     await axios.put(`${Api}/grades/student/${studentId}/subject/${subjectId}/date/${date}/grade/${grade}`);
+    console.log(grade)
   } catch (error) {
     console.error("Error updating grade:", error);
   }
@@ -89,6 +90,35 @@ export const fetchGradesByDate = async (
     });
   } catch (error) {
     console.error("Error fetching detailed grades:", error);
+  }
+
+  return gradesData;
+};
+
+export const fetchGradesByGroup = async (
+  groupName: string,
+  subjectIds: string[],
+  startDate: string,
+  endDate: string
+): Promise<IGradeData> => {
+  const gradesData: IGradeData = {};
+
+  try {
+    const fetchPromises = subjectIds.map(subjectId =>
+      axios.get(`${Api}/grades/group/${groupName}/subject/${subjectId}/daterange/${startDate}/${endDate}/average`)
+        .then(response => {
+          const total = typeof response.data === 'number' ? response.data : response.data.total || 0;
+          return { subjectId, total } as IGradeTotal;
+        })
+    );
+
+    const results = await Promise.all(fetchPromises);
+
+    results.forEach(({ subjectId, total }) => {
+      gradesData[subjectId] = total;
+    });
+  } catch (error) {
+    console.error("Error fetching grades:", error);
   }
 
   return gradesData;

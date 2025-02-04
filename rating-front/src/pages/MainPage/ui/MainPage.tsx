@@ -1,6 +1,7 @@
 import { Fragment, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { fetchStudents, fetchGroups } from '../../../store/slices/mainPageSlice'
+import { fetchStudents } from '../../../store/api/fetchStudents'
+import { fetchGroups } from '../../../store/api/fetchGroups'
 import { RootState, AppDispatch } from '../../../store/store'
 import { useSelector, useDispatch } from 'react-redux'
 import { GroupSelectButton } from '../../../features/ChoiceGroup/index'
@@ -12,17 +13,22 @@ export const MainPage: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
 
-  const students = useSelector((state: RootState) => state.mainPage.students);
-  const groups = useSelector((state: RootState) => state.mainPage.groups);
-  const status = useSelector((state: RootState) => state.mainPage.status);
-  const error = useSelector((state: RootState) => state.mainPage.error);
+  const students = useSelector((state: RootState) => state.students.students);
+  const studentsStatus = useSelector((state: RootState) => state.students.status);
+  const studentsError = useSelector((state: RootState) => state.students.error);
+
+  const groups = useSelector((state: RootState) => state.groups.groups);
+  const groupsStatus = useSelector((state: RootState) => state.groups.status);
+  const groupsError = useSelector((state: RootState) => state.groups.error);
 
   useEffect(() => {
-    if (status == 'idle') {
+    if (studentsStatus === 'idle') {
       dispatch(fetchStudents());
+    }
+    if (groupsStatus === 'idle') {
       dispatch(fetchGroups());
     }
-  }, [dispatch, status]);
+  }, [dispatch, studentsStatus, groupsStatus]);
 
   const handleStudentSelect = (id: string) => {
     navigate(`/extra/${id}`)
@@ -32,16 +38,16 @@ export const MainPage: React.FC = () => {
     navigate(`/compare`)
   }
 
-  const handleGroupSelect = (name: string, id: number) => {
-    navigate(`/extra-no-table/${name}/${id}`)
+  const handleGroupSelect = (name: string) => {
+    navigate(`/extra-no-table/${name}`)
   }
 
-  if (status === 'loading') {
+  if (studentsStatus === 'loading' || groupsStatus === 'loading') {
     return <LoadingIndicator text="Загрузка страницы..." />;
   }
 
-  if (error) {
-    return <p>Error: {error}</p>;
+  if (studentsError || groupsError) {
+    return <p>Error: {studentsError || groupsError}</p>;
   }
 
   return (

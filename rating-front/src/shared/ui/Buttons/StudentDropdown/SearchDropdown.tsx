@@ -6,17 +6,17 @@ import './SearchDropdown.css';
 interface IStudent {
   name: string;
   id: string;
+  groupName: string;
 }
 
 interface ISearchDropdown {
-  elements: Array<{ name: string; id: string; }>;
+  elements: IStudent[];
   title: string;
-  property: keyof IStudent;
+  property?: keyof IStudent;
   onSelect: (id: string) => void;
-  prop?: string;
-};
+}
 
-export const SearchDropdown: React.FC<ISearchDropdown> = ({ elements, title, property, onSelect }) => {
+export const SearchDropdown: React.FC<ISearchDropdown> = ({ elements, title, onSelect }) => {
   const {
     isOpen,
     searchTerm,
@@ -24,7 +24,7 @@ export const SearchDropdown: React.FC<ISearchDropdown> = ({ elements, title, pro
     filteredElements,
     handleToggleDropdown,
     handleSearchChange,
-  } = useSearchDropdown(elements, property);
+  } = useSearchDropdown(elements);
 
   const [selectedId, setSelectedId] = useState<string | null>(null);
 

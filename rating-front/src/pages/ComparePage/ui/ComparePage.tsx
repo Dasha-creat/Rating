@@ -4,6 +4,9 @@ import { BackButton } from '../../../shared/ui/index';
 import { SelectionControls } from '../../../widgets';
 import { usecomparePage } from '../../../shared/hooks/useComparePage';
 import { SingleStudentComparisonWidget } from '../../../widgets/SingleStudentComparisonWidget';
+import { RootState } from '../../../store/store';
+import { useSelector } from 'react-redux';
+import { GroupComparisonWidget } from '../../../widgets/GroupComparisonWidget';
 
 export const ComparePage: React.FC = () => {
   const {
@@ -16,11 +19,13 @@ export const ComparePage: React.FC = () => {
     setTempDateRange,
     handleShowData,
     isLoading,
-    elements,
     setSelectedStudents,
   } = usecomparePage();
 
   const navigate = useNavigate();
+
+  const students = useSelector((state: RootState) => state.students.students);
+  const groups = useSelector((state: RootState) => state.groups.groups);
 
   const handleDateRangeChange = (date: Date | [Date, Date] | null) => {
     if (Array.isArray(date) && date.length === 2) {
@@ -34,7 +39,7 @@ export const ComparePage: React.FC = () => {
 
       <SelectionControls 
         showTwoStudentsSelectButton={true} 
-        elements={elements}
+        elements={students}
         allSubjects={allSubjects}
         selectedSubjects={tempSelectedSubjects} 
         onSubjectChange={setTempSelectedSubjects}
@@ -48,9 +53,15 @@ export const ComparePage: React.FC = () => {
       />
 
       <SingleStudentComparisonWidget 
-        students={elements}
+        students={students}
         subjects={allSubjects}
       />
+
+      <GroupComparisonWidget
+      groups={groups}
+      subjects={allSubjects}
+      />
+
     </div>
   );
 };

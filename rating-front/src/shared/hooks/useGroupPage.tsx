@@ -14,7 +14,7 @@ interface SubjectData {
 }
 
 export const useGroupPage = () => {
-  const { id } = useParams<{ id: string }>();
+  const { name } = useParams<{ name: string }>();
   const [groupName, setGroupName] = useState<string>('');
   const [allSubjects, setAllSubjects] = useState<Subject[]>([]);
   const [selectedSubjects, setSelectedSubjects] = useState<Subject[]>([]);
@@ -27,7 +27,7 @@ export const useGroupPage = () => {
   useEffect(() => {
     const loadGroup = async () => {
       try {
-        const group = await fetchGroup(id as string);
+        const group = await fetchGroup(name as string);
         setGroupName(group.name);
       } catch (error) {
         console.error('Error fetching group:', error);
@@ -45,7 +45,7 @@ export const useGroupPage = () => {
 
     loadGroup();
     loadSubjects();
-  }, [id]);
+  }, [name]);
 
   const handleShowData = async () => {
     setSelectedSubjects(tempSelectedSubjects);
@@ -60,7 +60,7 @@ export const useGroupPage = () => {
     try {
       for (const subjectId of subjectIds) {
         const grade = await fetchGradesByDateRangeForGroup(
-          id as string,
+          name as string,
           subjectId,
           startDate,
           endDate

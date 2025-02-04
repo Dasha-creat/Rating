@@ -4,6 +4,7 @@ import { Api } from '../../../shared/config/index.tsx'
 interface Students {
   name: string;
   id: string;
+  groupName: string;
 };
 
 interface Groups {

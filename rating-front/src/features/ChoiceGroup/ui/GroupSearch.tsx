@@ -1,17 +1,23 @@
-import { GroupDropdown } from '../../../shared/ui/index'
+import { GroupDropdown } from '../../../shared/ui/index';
 
 interface IGroupSelectButton {
-  elements: Array<{name: string; id: number;}>;
-  onSelect: (name: string, id: number) => void;
+  elements: Array<{name: string; id: string;}>
+  onSelect: (name: string, id: string) => void;
   title: string;
+  setStudents?: (students: Array<{id: string; name: string;}>) => void;
 };
 
-export const GroupSelectButton: React.FC<IGroupSelectButton> = ({ elements, onSelect, title }) => {
+export const GroupSelectButton: React.FC<IGroupSelectButton> = ({ elements, onSelect, title, setStudents }) => {
   return (
     <GroupDropdown
       elements={elements} 
       title={title}  
-      onSelect={onSelect} 
+      onSelect={(name, id) => {
+        onSelect(name, id);
+        if (setStudents) {
+          setStudents([]);
+        }
+      }} 
     />
-  )
-}
+  );
+};

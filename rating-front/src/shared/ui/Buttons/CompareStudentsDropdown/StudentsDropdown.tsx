@@ -4,8 +4,8 @@ import { arrow } from '../../../assets';
 import './StudentsDropdown.css';
 
 interface IStudentsDropdown {
-  elements: Array<{ id: string; name: string }>;
-  onStudentsChange: (selectedStudents: { id: string; name: string }[]) => void;
+  elements: Array<{ id: string; name: string, groupName: string }>;
+  onStudentsChange: (selectedStudents: { id: string; name: string, groupName: string }[]) => void;
 }
 
 export const StudentsDropdown: React.FC<IStudentsDropdown> = ({ elements, onStudentsChange }) => {
@@ -22,7 +22,7 @@ export const StudentsDropdown: React.FC<IStudentsDropdown> = ({ elements, onStud
   } = useStudentsDropdown(onStudentsChange); 
 
   const filteredElements = elements.filter((element) =>
-    element.name.toLowerCase().includes(searchTerm.toLowerCase())
+    element.name && element.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
   
   return (
@@ -52,11 +52,11 @@ export const StudentsDropdown: React.FC<IStudentsDropdown> = ({ elements, onStud
             className="input"
           />
           </div>
-          {filteredElements.map(({ id, name }) => (
+          {filteredElements.map(({ id, name, groupName }) => (
             <div
               key={id}
               className={`dropdown-items ${selectedStudents.some(student => student.id === id) ? 'fourtwo dropdown-includes' : 'button four'}`}
-              onClick={() => handleSelect(id, name)}
+              onClick={() => handleSelect(id, name, groupName)}
             >
               {id}
             </div>

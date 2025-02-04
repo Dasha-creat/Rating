@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { fetchSubjects, Subject } from '../../entities/Subject/index';
 import { fetchGradesByDateRange, formatDate, getDateRangeArray } from '../../entities/Grade/index.tsx';
-import { fetchElements } from '../../features/MainPage/model/index';
 import { Student } from '../../entities/Student/index';
 
 interface GradeData {
@@ -19,11 +18,6 @@ interface SubjectData {
   name: string;
 }
 
-interface IGroups {
-  name: string;
-  id: number;
-}
-
 export const usecomparePage = () => {
   const [allSubjects, setAllSubjects] = useState<Subject[]>([]);
   const [tempSelectedSubjects, setTempSelectedSubjects] = useState<Subject[]>([]);
@@ -31,13 +25,8 @@ export const usecomparePage = () => {
   const [gradesForTwo, setGradesForTwo] = useState<IGradesForTwo>({});
   const [tempDateRange, setTempDateRange] = useState<[Date, Date]>([new Date(), new Date()]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [elements, setElements] = useState<Student[]>([]);
-  const [groups, setGroups] = useState<IGroups[]>([]);
   const [selectedStudents, setSelectedStudents] = useState<Student[]>([]);
 
-  useEffect(() => {
-    fetchElements(setElements, setGroups);
-  }, []);
 
   useEffect(() => {
     const loadSubjects = async () => {
@@ -111,9 +100,7 @@ export const usecomparePage = () => {
     setTempDateRange,
     handleShowData,
     isLoading,
-    elements,
     selectedStudents,
     setSelectedStudents,
-    groups,
   };
 };

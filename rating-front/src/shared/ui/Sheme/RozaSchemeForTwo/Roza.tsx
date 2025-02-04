@@ -37,7 +37,7 @@ export const Roza: React.FC<IRozaProps> = ({ gradesForTwo, elements, isLoading }
         });
 
         return {
-          label: `Студент ${studentId}`,
+          label: `${studentId}`,
           data: data,
           backgroundColor: index === 0 ? 'rgba(34, 202, 236, 0.2)' : 'rgba(255, 99, 132, 0.2)',
           borderColor: index === 0 ? 'rgba(34, 202, 236, 1)' : 'rgba(255, 99, 132, 1)',

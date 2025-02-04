@@ -1,31 +1,35 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "axios";
-import { Api } from '../../shared/config/index';
+import { createSlice } from "@reduxjs/toolkit";
+import { fetchStudents } from "../api/fetchStudents";
+import { fetchGroups } from "../api/fetchGroups"; 
 
-export const fetchStudents = createAsyncThunk(
-    'mainPage/fetchStudents',
-    async () => {
-        const response = await axios.get(`${Api}/students`);
-        return response.data;
-    }
-);
+interface IStudent {
+    name: string;
+    id: string;
+    groupName: string;
+}
 
-export const fetchGroups = createAsyncThunk(
-    'mainPage/fetchGroups',
-    async () => {
-        const response = await axios.get(`${Api}/groups`);
-        return response.data;
-    }
-);
+interface IGroup {
+    name: string;
+    id: string;
+}
+
+interface IMainPageState {
+    students: IStudent[];
+    groups: IGroup[];
+    status: 'idle' | 'loading' | 'succeeded' | 'failed';
+    error: string | null;
+}
+
+const initialState: IMainPageState = {
+    students: [],
+    groups: [],
+    status: 'idle',
+    error: null,
+};
 
 const mainPageSlice = createSlice({
     name: 'mainPage',
-    initialState: {
-        students: [],
-        groups: [],
-        status: 'idle',
-        error: null as string | null | undefined,
-    },
+    initialState,
     reducers: {},
     extraReducers: (builder) => {
         builder
@@ -38,7 +42,7 @@ const mainPageSlice = createSlice({
         })
         .addCase(fetchStudents.rejected, (state, action) => {
             state.status = 'failed';
-            state.error = action.error.message;
+            state.error = action.error.message || 'Failed to load students';
         })
         .addCase(fetchGroups.pending, (state) => {
             state.status = 'loading';
@@ -49,8 +53,8 @@ const mainPageSlice = createSlice({
         })
         .addCase(fetchGroups.rejected, (state, action) => {
             state.status = 'failed';
-            state.error = action.error.message;
-        })
+            state.error = action.error.message || 'Failed to load groups';
+        });
     }
 });
 

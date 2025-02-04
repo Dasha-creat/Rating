@@ -3,9 +3,10 @@ import { useState, useRef, useEffect } from 'react';
 interface IStudent {
   name: string;
   id: string;
+  groupName: string;
 }
 
-export const useSearchDropdown = (elements: IStudent[], property: keyof IStudent) => {
+export const useSearchDropdown = (elements: IStudent[]) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [searchTerm, setSearchTerm] = useState<string>('');
   const dropdownRef = useRef<HTMLDivElement | null>(null);
@@ -19,7 +20,7 @@ export const useSearchDropdown = (elements: IStudent[], property: keyof IStudent
   };
 
   const filteredElements = elements.filter((element) =>
-    element[property].toLowerCase().includes(searchTerm.toLowerCase())
+    element.name && element.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   const handleClickOutside = (event: MouseEvent) => {
