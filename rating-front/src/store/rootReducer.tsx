@@ -1,12 +1,8 @@
 import { combineReducers } from 'redux';
-import mainPageReducer from './slices/mainPageSlice';
-import studentsSlice from './slices/studentsSlice';
-import groupsSlice from './slices/groupsSlice';
+import { MainPageReducer } from '../pages/MainPage/index.tsx';
 
 const rootReducer = combineReducers({
-    mainPage: mainPageReducer,
-    students: studentsSlice,
-    groups: groupsSlice
+    mainPage: MainPageReducer
 });
 
 export default rootReducer;

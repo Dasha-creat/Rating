@@ -1,23 +1,21 @@
+import { useSelector } from 'react-redux';
+import { RootState } from '../../../store/store';
 import { GroupDropdown } from '../../../shared/ui/index';
 
 interface IGroupSelectButton {
-  elements: Array<{name: string; id: string;}>
+  elements: Array<{ name: string; id: string; }>;
   onSelect: (name: string, id: string) => void;
   title: string;
-  setStudents?: (students: Array<{id: string; name: string;}>) => void;
 };
 
-export const GroupSelectButton: React.FC<IGroupSelectButton> = ({ elements, onSelect, title, setStudents }) => {
+export const GroupSelectButton: React.FC<IGroupSelectButton> = ({ onSelect, title }) => {
+  const groups = useSelector((state: RootState) => state.mainPage.groups);
+
   return (
     <GroupDropdown
-      elements={elements} 
+      elements={groups} 
       title={title}  
-      onSelect={(name, id) => {
-        onSelect(name, id);
-        if (setStudents) {
-          setStudents([]);
-        }
-      }} 
+      onSelect={onSelect} 
     />
   );
 };

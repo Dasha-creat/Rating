@@ -1,34 +1,19 @@
-import { Fragment, useEffect } from 'react'
+import { Fragment } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { fetchStudents } from '../../../store/api/fetchStudents'
-import { fetchGroups } from '../../../store/api/fetchGroups'
-import { RootState, AppDispatch } from '../../../store/store'
-import { useSelector, useDispatch } from 'react-redux'
+import { RootState } from '../../../store/store'
+import { useSelector } from 'react-redux'
 import { GroupSelectButton } from '../../../features/ChoiceGroup/index'
 import { StudentSelectButton } from '../../../features/ChoiceStudent/index'
 import { LoadingIndicator } from '../../../shared/ui'
 import './MainPage.css'
 
 export const MainPage: React.FC = () => {
-  const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
 
-  const students = useSelector((state: RootState) => state.students.students);
-  const studentsStatus = useSelector((state: RootState) => state.students.status);
-  const studentsError = useSelector((state: RootState) => state.students.error);
-
-  const groups = useSelector((state: RootState) => state.groups.groups);
-  const groupsStatus = useSelector((state: RootState) => state.groups.status);
-  const groupsError = useSelector((state: RootState) => state.groups.error);
-
-  useEffect(() => {
-    if (studentsStatus === 'idle') {
-      dispatch(fetchStudents());
-    }
-    if (groupsStatus === 'idle') {
-      dispatch(fetchGroups());
-    }
-  }, [dispatch, studentsStatus, groupsStatus]);
+  const students = useSelector((state: RootState) => state.mainPage.students);
+  const groups = useSelector((state: RootState) => state.mainPage.groups);
+  const status = useSelector((state: RootState) => state.mainPage.status);
+  const error = useSelector((state: RootState) => state.mainPage.error);
 
   const handleStudentSelect = (id: string) => {
     navigate(`/extra/${id}`)
@@ -38,16 +23,16 @@ export const MainPage: React.FC = () => {
     navigate(`/compare`)
   }
 
-  const handleGroupSelect = (name: string) => {
-    navigate(`/extra-no-table/${name}`)
+  const handleGroupSelect = (name: string, id: string) => {
+    navigate(`/extra-no-table/${name}/${id}`)
   }
 
-  if (studentsStatus === 'loading' || groupsStatus === 'loading') {
+  if (status === 'loading') {
     return <LoadingIndicator text="Загрузка страницы..." />;
   }
 
-  if (studentsError || groupsError) {
-    return <p>Error: {studentsError || groupsError}</p>;
+  if (error) {
+    return <p>Error: {error}</p>;
   }
 
   return (
@@ -60,7 +45,7 @@ export const MainPage: React.FC = () => {
             title={"Выбрать студента"}
           />
           <GroupSelectButton 
-            elements={groups} 
+            elements={groups}
             onSelect={handleGroupSelect} 
             title={"Выбрать группу"}
           />
