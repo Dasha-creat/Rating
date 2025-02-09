@@ -7,12 +7,14 @@ export function* loadStudentsAndGroups(): Generator {
     try {
         const students = yield call(fetchStudents);
         const groups = yield call(fetchGroups);
-        
+
         yield put(MainPageActions.loadStudentsFulfilled(students));
         yield put(MainPageActions.loadingGroupsFulfilled(groups));
     } catch (error) {
-        yield put(MainPageActions.loadStudentsFailed(error.message));
-        yield put(MainPageActions.loadingGroupsFailed(error.message));
+        const errorMessage = error instanceof Error ? error.message : "Unknown error";
+
+        yield put(MainPageActions.loadStudentsFailed(errorMessage));
+        yield put(MainPageActions.loadingGroupsFailed(errorMessage));
     }
 }
 

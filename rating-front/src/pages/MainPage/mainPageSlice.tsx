@@ -1,16 +1,17 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { Status, Statuses } from "../../shared/status/index"
 
 interface MainPageState {
     students: Array<{ name: string; id: string; }>;
     groups: Array<{name: string; id: number;}>;
-    status: 'idle' | 'loading' | 'succeeded' | 'failed';
+    status: Status;
     error: string | null;
 }
 
 const initialState: MainPageState = {
     students: [],
     groups: [],
-    status: 'idle',
+    status: Statuses.idle,
     error: null,
 }
 
@@ -19,25 +20,25 @@ export const { reducer, actions } = createSlice({
     initialState,
     reducers: {
         loadStudentsPending: (state) => {
-            state.status = 'loading';
+            state.status = Statuses.loading;
         },
         loadStudentsFulfilled: (state, action: PayloadAction<Array<{ name: string; id: string; }>>) => {
-            state.status = 'succeeded';
+            state.status = Statuses.succeeded;
             state.students = action.payload;
         },
         loadStudentsFailed: (state, action: PayloadAction<string>) => {
-            state.status = 'failed';
+            state.status = Statuses.failed;
             state.error = action.payload;
         },
         loadGroupsPending: (state) => {
-            state.status = 'loading';
+            state.status = Statuses.loading;
         },
         loadingGroupsFulfilled: (state, action: PayloadAction<Array<{name: string; id: number;}>>) => {
-            state.status = 'succeeded';
+            state.status = Statuses.succeeded;
             state.groups = action.payload;
         },
         loadingGroupsFailed: (state, action: PayloadAction<string>) => {
-            state.status = 'failed';
+            state.status = Statuses.failed;
             state.error = action.payload;
         }
     },
