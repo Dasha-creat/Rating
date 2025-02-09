@@ -1,28 +1,19 @@
-import { Fragment, useEffect } from 'react'
+import { Fragment } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { fetchStudents, fetchGroups } from '../../../store/slices/mainPageSlice'
-import { RootState, AppDispatch } from '../../../store/store'
-import { useSelector, useDispatch } from 'react-redux'
+import { RootState } from '../../../store/store'
+import { useSelector } from 'react-redux'
 import { GroupSelectButton } from '../../../features/ChoiceGroup/index'
 import { StudentSelectButton } from '../../../features/ChoiceStudent/index'
 import { LoadingIndicator } from '../../../shared/ui'
 import './MainPage.css'
 
 export const MainPage: React.FC = () => {
-  const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
 
   const students = useSelector((state: RootState) => state.mainPage.students);
   const groups = useSelector((state: RootState) => state.mainPage.groups);
   const status = useSelector((state: RootState) => state.mainPage.status);
   const error = useSelector((state: RootState) => state.mainPage.error);
-
-  useEffect(() => {
-    if (status == 'idle') {
-      dispatch(fetchStudents());
-      dispatch(fetchGroups());
-    }
-  }, [dispatch, status]);
 
   const handleStudentSelect = (id: string) => {
     navigate(`/extra/${id}`)
@@ -54,7 +45,7 @@ export const MainPage: React.FC = () => {
             title={"Выбрать студента"}
           />
           <GroupSelectButton 
-            elements={groups} 
+            elements={groups}
             onSelect={handleGroupSelect} 
             title={"Выбрать группу"}
           />

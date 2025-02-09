@@ -1,8 +1,8 @@
 import { combineReducers } from 'redux';
-import mainPageReducer from '../store/slices/mainPageSlice';
+import { MainPageReducer } from '../pages/MainPage/index.tsx';
 
 const rootReducer = combineReducers({
-    mainPage: mainPageReducer
+    mainPage: MainPageReducer
 });
 
 export default rootReducer;
