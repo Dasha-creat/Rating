@@ -24,8 +24,8 @@ export const ComparePage: React.FC = () => {
 
   const navigate = useNavigate();
 
-  const students = useSelector((state: RootState) => state.students.students);
-  const groups = useSelector((state: RootState) => state.groups.groups);
+  const students = useSelector((state: RootState) => state.mainPage.students);
+  const groups = useSelector((state: RootState) => state.mainPage.groups);
 
   const handleDateRangeChange = (date: Date | [Date, Date] | null) => {
     if (Array.isArray(date) && date.length === 2) {

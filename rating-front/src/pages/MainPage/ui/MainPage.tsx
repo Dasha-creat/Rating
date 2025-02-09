@@ -23,8 +23,8 @@ export const MainPage: React.FC = () => {
     navigate(`/compare`)
   }
 
-  const handleGroupSelect = (name: string, id: string) => {
-    navigate(`/extra-no-table/${name}/${id}`)
+  const handleGroupSelect = (name: string) => {
+    navigate(`/extra-no-table/${name}`)
   }
 
   if (status === 'loading') {

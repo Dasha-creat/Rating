@@ -2,8 +2,8 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { Status, Statuses } from "../../shared/status/index"
 
 interface MainPageState {
-    students: Array<{ name: string; id: string; }>;
-    groups: Array<{name: string; id: number;}>;
+    students: Array<{ name: string; id: string; groupName: string}>;
+    groups: Array<{name: string; id: string;}>;
     status: Status;
     error: string | null;
 }
@@ -22,7 +22,7 @@ export const { reducer, actions } = createSlice({
         loadStudentsPending: (state) => {
             state.status = Statuses.loading;
         },
-        loadStudentsFulfilled: (state, action: PayloadAction<Array<{ name: string; id: string; }>>) => {
+        loadStudentsFulfilled: (state, action: PayloadAction<Array<{ name: string; id: string; groupName: string}>>) => {
             state.status = Statuses.succeeded;
             state.students = action.payload;
         },
@@ -33,7 +33,7 @@ export const { reducer, actions } = createSlice({
         loadGroupsPending: (state) => {
             state.status = Statuses.loading;
         },
-        loadingGroupsFulfilled: (state, action: PayloadAction<Array<{name: string; id: number;}>>) => {
+        loadingGroupsFulfilled: (state, action: PayloadAction<Array<{name: string; id: string;}>>) => {
             state.status = Statuses.succeeded;
             state.groups = action.payload;
         },
